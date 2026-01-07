@@ -21,13 +21,17 @@ rss_feeds:
 
 wikipedia:
   enabled: true
+  stream_url: "https://stream.wikimedia.org/v2/stream/recentchange"
   pages:
     - title: "KF-21 Boramae"
       category: "aircraft"
+      country: "korea"
     - title: "K2 Black Panther"
       category: "tank"
+      country: "korea"
     - title: "F-35 Lightning II"
       category: "aircraft"
+      country: "us"
 
 filters:
   high_priority:
@@ -35,10 +39,19 @@ filters:
     - "K2 tank"
     - "F-35"
     - "nuclear"
+    - "ICBM"
+    - "stealth"
   medium_priority:
     - "military"
     - "defense"
     - "weapon"
+    - "missile"
+    - "army"
+    - "navy"
+    - "air force"
+  exclude:
+    - "sports"
+    - "entertainment"
 
 schedule:
   rss_collection_interval: 300

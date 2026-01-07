@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Military News Aggregator</title>
+    <meta http-equiv="refresh" content="300">
+    <title>Military News Aggregator - 밀리터리 뉴스</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
@@ -18,8 +19,18 @@
             background: white;
             border-radius: 20px;
             padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        h1 { color: #2d3748; }
+        h1 { 
+            color: #2d3748; 
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #718096;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -27,193 +38,371 @@
             margin: 30px 0;
         }
         .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .stat-card h3 { 
+            font-size: 0.9em; 
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        .stat-card p { 
+            font-size: 2.5em; 
+            font-weight: bold;
+        }
+        .articles {
+            margin-top: 40px;
+        }
+        .articles h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .article {
             background: #f7fafc;
             padding: 20px;
-            border-radius: 10px;
+            margin-bottom: 15px;
+            border-radius: 12px;
             border-left: 4px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .stat-card h3 { color: #4a5568; font-size: 0.9em; }
-        .stat-card p { color: #2d3748; font-size: 2em; font-weight: bold; }
-        .article {
+        .article:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .article h3 { 
+            color: #2d3748; 
+            font-size: 1.15em; 
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .article a { 
+            color: #2d3748;
+            text-decoration: none;
+        }
+        .article a:hover {
+            color: #667eea;
+        }
+        .meta { 
+            color: #718096; 
+            font-size: 0.85em;
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        .meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .source-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+        }
+        .last-update {
             background: #edf2f7;
-            padding: 15px;
-            margin: 10px 0;
+            padding: 10px;
             border-radius: 8px;
+            text-align: center;
+            color: #4a5568;
+            font-size: 0.9em;
+            margin-bottom: 20px;
         }
-        .article h3 { color: #2d3748; margin-bottom: 5px; }
-        .article a { color: #667eea; text-decoration: none; }
-        .meta { color: #718096; font-size: 0.85em; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🪖 Military News Aggregator</h1>
-        <p style="color: #718096;">실시간 밀리터리 뉴스 수집 시스템</p>
+        <p class="subtitle">실시간 밀리터리 뉴스 및 무기체계 정보 자동 수집 시스템</p>
+        
+        <div class="last-update">
+            ⏰ 최종 업데이트: 2026-01-07 19:53:15
+        </div>
         
         <div class="stats">
             <div class="stat-card">
-                <h3>�� 총 수집</h3>
-                <p>30</p>
+                <h3>📰 총 수집 기사</h3>
+                <p>31</p>
             </div>
             <div class="stat-card">
                 <h3>🆕 오늘 수집</h3>
-                <p>30</p>
+                <p>31</p>
+            </div>
+            <div class="stat-card">
+                <h3>📡 RSS 소스</h3>
+                <p>3개</p>
+            </div>
+            <div class="stat-card">
+                <h3>📚 Wikipedia 모니터링</h3>
+                <p>3개</p>
             </div>
         </div>
         
         <div class="articles">
-            <h2 style="color: #2d3748; margin: 20px 0;">최신 기사</h2>
+            <h2>📰 최신 밀리터리 뉴스</h2>
+
+            <div class="article">
+                <h3><a href="https://en.yna.co.kr/view/AEN20260107010400315" target="_blank">Lee returns home from China trip focused on improving ties</a></h3>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:53:07</span>
+                </div>
+            </div>
 
             <div class="article">
                 <h3><a href="https://en.yna.co.kr/view/AEN20260107010300315" target="_blank">Seoul seeks Beijing's support in tracking down Chinese suspect behind Coupang data breach: minister</a></h3>
-                <div class="meta">Yonhap News • 2026-01-07 12:48:02</div>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:48:02</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://en.yna.co.kr/view/AEN20260107000451315" target="_blank">Lee marks 100th anniv. of establishment of Korean provisional gov't building in Shanghai</a></h3>
-                <div class="meta">Yonhap News • 2026-01-07 12:48:02</div>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:48:02</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://en.yna.co.kr/view/AEN20260107003952315" target="_blank">(2nd LD) Acting U.S. ambassador leaves post in S. Korea: foreign ministry</a></h3>
-                <div class="meta">Yonhap News • 2026-01-07 12:48:02</div>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:48:02</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://en.yna.co.kr/view/AEN20260107010200315" target="_blank">Colby seeks visits to S. Korea, Japan in late Jan.: sources</a></h3>
-                <div class="meta">Yonhap News • 2026-01-07 12:48:02</div>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:48:02</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://en.yna.co.kr/view/AEN20260107010100315" target="_blank">Defense chief reaffirms continued S. Korea-U.S. combined drills despite calls for adjustment</a></h3>
-                <div class="meta">Yonhap News • 2026-01-07 12:48:02</div>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:48:02</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://en.yna.co.kr/view/AEN20260107009900315" target="_blank">First lady promotes Korean cosmetics at K-beauty event in Shanghai</a></h3>
-                <div class="meta">Yonhap News • 2026-01-07 12:48:02</div>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:48:02</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://en.yna.co.kr/view/AEN20260107009000315" target="_blank">Anti-skid system malfunction behind recent T-50 trainer jet accident: Air Force</a></h3>
-                <div class="meta">Yonhap News • 2026-01-07 12:48:02</div>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:48:02</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://en.yna.co.kr/view/AEN20260107009100315" target="_blank">Yonhap News Summary</a></h3>
-                <div class="meta">Yonhap News • 2026-01-07 12:48:02</div>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:48:02</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://en.yna.co.kr/view/AEN20260107008200315" target="_blank">Envisioned Lee-Takaichi summit to have meaningful impact for bilateral ties: envoy</a></h3>
-                <div class="meta">Yonhap News • 2026-01-07 12:48:02</div>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:48:02</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://en.yna.co.kr/view/AEN20260107008400315" target="_blank">Lee says China expected to remove part of disputed steel structures from overlapping waters in Yellow Sea</a></h3>
-                <div class="meta">Yonhap News • 2026-01-07 12:48:02</div>
+                <div class="meta">
+                    <span class="source-badge">Yonhap News</span>
+                    <span>📅 2026-01-07 12:48:02</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.militarytimes.com/news/pentagon-congress/2026/01/07/dod-launches-review-of-effectiveness-of-women-in-ground-combat-roles/" target="_blank">DOD launches review of ‘effectiveness’ of women in ground combat roles</a></h3>
-                <div class="meta">Military Times • 2026-01-07 12:48:01</div>
+                <div class="meta">
+                    <span class="source-badge">Military Times</span>
+                    <span>📅 2026-01-07 12:48:01</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.militarytimes.com/news/your-military/2026/01/06/this-was-surgical-the-tactics-behind-the-maduro-mission/" target="_blank">‘This was surgical’: The tactics behind the Maduro mission</a></h3>
-                <div class="meta">Military Times • 2026-01-07 12:48:01</div>
+                <div class="meta">
+                    <span class="source-badge">Military Times</span>
+                    <span>📅 2026-01-07 12:48:01</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.militarytimes.com/veterans/2026/01/06/state-veterans-cemeteries-receive-grants-for-improvement-expansion/" target="_blank">State veterans cemeteries receive grants for improvement, expansion</a></h3>
-                <div class="meta">Military Times • 2026-01-07 12:48:01</div>
+                <div class="meta">
+                    <span class="source-badge">Military Times</span>
+                    <span>📅 2026-01-07 12:48:01</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.militarytimes.com/air/2026/01/06/us-air-force-awards-boeing-2b-contract-to-begin-b-52-engine-upgrades/" target="_blank">US Air Force awards Boeing $2B contract to begin B-52 engine upgrades</a></h3>
-                <div class="meta">Military Times • 2026-01-07 12:48:01</div>
+                <div class="meta">
+                    <span class="source-badge">Military Times</span>
+                    <span>📅 2026-01-07 12:48:01</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.militarytimes.com/veterans/military-history/2026/01/06/he-turned-down-a-trip-home-from-the-korean-war-then-earned-the-moh/" target="_blank">He turned down a trip home from the Korean War, then earned the MOH</a></h3>
-                <div class="meta">Military Times • 2026-01-07 12:48:01</div>
+                <div class="meta">
+                    <span class="source-badge">Military Times</span>
+                    <span>📅 2026-01-07 12:48:01</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.militarytimes.com/news/pentagon-congress/2026/01/06/why-trump-is-claiming-the-us-needs-greenland-for-arctic-security/" target="_blank">Why Trump is claiming the US ‘needs’ Greenland for Arctic security</a></h3>
-                <div class="meta">Military Times • 2026-01-07 12:48:01</div>
+                <div class="meta">
+                    <span class="source-badge">Military Times</span>
+                    <span>📅 2026-01-07 12:48:01</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.militarytimes.com/opinion/2026/01/06/why-the-us-should-consider-testing-its-nuclear-arsenal/" target="_blank">Why the US should resume testing its nuclear arsenal</a></h3>
-                <div class="meta">Military Times • 2026-01-07 12:48:01</div>
+                <div class="meta">
+                    <span class="source-badge">Military Times</span>
+                    <span>📅 2026-01-07 12:48:01</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.militarytimes.com/opinion/2026/01/05/can-the-us-run-venezuela-military-force-doesnt-equal-legitimacy/" target="_blank">Can the US ‘run’ Venezuela? Military force doesn’t equal legitimacy</a></h3>
-                <div class="meta">Military Times • 2026-01-07 12:48:01</div>
+                <div class="meta">
+                    <span class="source-badge">Military Times</span>
+                    <span>📅 2026-01-07 12:48:01</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.militarytimes.com/news/your-marine-corps/2026/01/05/marine-master-sergeant-redesignated-to-first-sergeant-in-pilot-program/" target="_blank">Marine master sergeant redesignated to first sergeant in pilot program</a></h3>
-                <div class="meta">Military Times • 2026-01-07 12:48:01</div>
+                <div class="meta">
+                    <span class="source-badge">Military Times</span>
+                    <span>📅 2026-01-07 12:48:01</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.militarytimes.com/air/2026/01/05/videos-suggest-stealthy-air-force-drone-flew-recon-for-maduro-capture/" target="_blank">Videos suggest stealthy Air Force drone flew recon for Maduro capture</a></h3>
-                <div class="meta">Military Times • 2026-01-07 12:48:01</div>
+                <div class="meta">
+                    <span class="source-badge">Military Times</span>
+                    <span>📅 2026-01-07 12:48:01</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.defenseone.com/threats/2026/01/white-house-floats-military-action-take-greenland/410503/" target="_blank">White House floats military action to take Greenland</a></h3>
-                <div class="meta">Defense One • 2026-01-07 12:47:59</div>
+                <div class="meta">
+                    <span class="source-badge">Defense One</span>
+                    <span>📅 2026-01-07 12:47:59</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.defenseone.com/threats/2026/01/analysts-watch-heightened-cyber-disinformation-campaigns-following-venezuela-raid/410497/" target="_blank">US, observers watch for cyber, disinformation campaigns in wake of Venezuela raid</a></h3>
-                <div class="meta">Defense One • 2026-01-07 12:47:59</div>
+                <div class="meta">
+                    <span class="source-badge">Defense One</span>
+                    <span>📅 2026-01-07 12:47:59</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.defenseone.com/threats/2026/01/the-d-brief-january-06-2026/410476/" target="_blank">The D Brief: Post-Maduro moves; Europe unites over Greenland; Marines’ ‘hidden crisis’; Jan. 6, remembered; And a bit more.</a></h3>
-                <div class="meta">Defense One • 2026-01-07 12:47:59</div>
+                <div class="meta">
+                    <span class="source-badge">Defense One</span>
+                    <span>📅 2026-01-07 12:47:59</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.defenseone.com/policy/2026/01/hegseth-aims-dock-sen-kellys-pension-illegal-orders-video/410470/" target="_blank">Hegseth aims to dock Sen. Kelly's pension for illegal-orders video</a></h3>
-                <div class="meta">Defense One • 2026-01-07 12:47:59</div>
+                <div class="meta">
+                    <span class="source-badge">Defense One</span>
+                    <span>📅 2026-01-07 12:47:59</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.defenseone.com/ideas/2026/01/can-us-run-venezuela-military-force-can-topple-dictator-it-cannot-create-political-authority-or-legitimacy/410451/" target="_blank">Military force can topple a dictator, but it cannot create political authority or legitimacy</a></h3>
-                <div class="meta">Defense One • 2026-01-07 12:47:59</div>
+                <div class="meta">
+                    <span class="source-badge">Defense One</span>
+                    <span>📅 2026-01-07 12:47:59</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.defenseone.com/threats/2026/01/the-d-brief-january-05-2026/410450/" target="_blank">The D Brief: Trump threatens more countries after Maduro abduction; SCOTUS rejects Guard deployment; Nigerian-strike fallout; 2025 scorecard; And a bit more.</a></h3>
-                <div class="meta">Defense One • 2026-01-07 12:47:59</div>
+                <div class="meta">
+                    <span class="source-badge">Defense One</span>
+                    <span>📅 2026-01-07 12:47:59</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.defenseone.com/policy/2026/01/line-crossed-lawmakers-lawyers-anti-war-advocates-alarmed-venezuela-overthrow/410442/" target="_blank">‘A line crossed’: Lawmakers, lawyers, anti-war advocates alarmed by Venezuela overthrow</a></h3>
-                <div class="meta">Defense One • 2026-01-07 12:47:59</div>
+                <div class="meta">
+                    <span class="source-badge">Defense One</span>
+                    <span>📅 2026-01-07 12:47:59</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.defenseone.com/threats/2026/01/inside-absolute-resolve-regime-change-assault-venezuela/410440/" target="_blank">How ‘Absolute Resolve’ harnessed 150 aircraft and more to launch a regime change in Venezuela</a></h3>
-                <div class="meta">Defense One • 2026-01-07 12:47:59</div>
+                <div class="meta">
+                    <span class="source-badge">Defense One</span>
+                    <span>📅 2026-01-07 12:47:59</span>
+                </div>
             </div>
 
             <div class="article">
                 <h3><a href="https://www.defenseone.com/threats/2026/01/us-spy-agencies-contributed-operation-captured-maduro/410437/" target="_blank">US spy agencies contributed to operation that captured Maduro</a></h3>
-                <div class="meta">Defense One • 2026-01-07 12:47:59</div>
+                <div class="meta">
+                    <span class="source-badge">Defense One</span>
+                    <span>📅 2026-01-07 12:47:59</span>
+                </div>
             </div>
 
-            <div class="article">
-                <h3><a href="https://www.defenseone.com/threats/2026/01/us-will-run-venezuela-now-trump-says-after-armed-assault-capital/410436/" target="_blank">The US will ‘run’ Venezuela for now, Trump says after armed assault on capital</a></h3>
-                <div class="meta">Defense One • 2026-01-07 12:47:59</div>
-            </div>
-
+        </div>
+        
+        <div class="footer">
+            <p>🔗 <a href="https://github.com/hugh79757-cmyk/mil" style="color: #667eea; text-decoration: none;">GitHub Repository</a></p>
+            <p style="margin-top: 10px; font-size: 0.85em;">Powered by RSS Feeds + Wikipedia EventStreams</p>
         </div>
     </div>
 </body>
