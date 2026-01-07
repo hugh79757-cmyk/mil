@@ -1,0 +1,50 @@
+database:
+  path: "data/news.db"
+  backup_interval: 86400
+
+api_keys:
+  newsdata_io: ""
+
+rss_feeds:
+  - name: "Defense One"
+    url: "https://www.defenseone.com/rss/all/"
+    language: "en"
+    category: "global"
+  - name: "Military Times"
+    url: "https://www.militarytimes.com/arc/outboundfeeds/rss/"
+    language: "en"
+    category: "global"
+  - name: "Yonhap News"
+    url: "https://en.yna.co.kr/RSS/national.xml"
+    language: "en"
+    category: "korea"
+
+wikipedia:
+  enabled: true
+  pages:
+    - title: "KF-21 Boramae"
+      category: "aircraft"
+    - title: "K2 Black Panther"
+      category: "tank"
+    - title: "F-35 Lightning II"
+      category: "aircraft"
+
+filters:
+  high_priority:
+    - "KF-21"
+    - "K2 tank"
+    - "F-35"
+    - "nuclear"
+  medium_priority:
+    - "military"
+    - "defense"
+    - "weapon"
+
+schedule:
+  rss_collection_interval: 300
+  news_api_interval: 3600
+  wikipedia_realtime: true
+
+logging:
+  level: "INFO"
+  file: "data/logs/app.log"
