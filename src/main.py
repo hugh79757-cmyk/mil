@@ -10,6 +10,7 @@ from database import Database
 from rss_collector import RSSCollector
 from wiki_monitor import WikipediaMonitor
 from content_filter import ContentFilter
+from translator import Translator
 
 logging.basicConfig(
     level=logging.INFO,
@@ -33,9 +34,15 @@ class MilitaryNewsAggregator:
         self.db = Database(str(db_path))
         
         # 모듈 초기화
-        self.rss_collector = RSSCollector(self.config, self.db)
-        self.wiki_monitor = WikipediaMonitor(self.config, self.db)
         self.content_filter = ContentFilter(self.config)
+        self.translator = Translator(self.config)
+        self.rss_collector = RSSCollector(
+            self.config, 
+            self.db, 
+            self.content_filter,
+            self.translator
+        )
+        self.wiki_monitor = WikipediaMonitor(self.config, self.db)
         
         logger.info("✅ 초기화 완료")
     
@@ -80,19 +87,14 @@ class MilitaryNewsAggregator:
         
         while True:
             try:
-                # 수집
                 articles = self.rss_collector.collect_all()
                 
-                # 필터링
-                filtered = self.content_filter.filter_articles(articles)
-                
-                logger.info(f"📰 RSS: {len(articles)}개 수집 → {len(filtered)}개 필터링")
-                
-                # 상위 3개 기사 출력
-                if filtered:
+                if articles:
+                    sorted_articles = sorted(articles, key=lambda x: x.get('score', 0), reverse=True)
                     logger.info("\n🔥 주요 기사:")
-                    for i, article in enumerate(filtered[:3], 1):
-                        logger.info(f"   {i}. [{article['source']}] {article['title'][:60]}... (점수: {article['score']})")
+                    for i, article in enumerate(sorted_articles[:3], 1):
+                        title_display = article.get('title_ko') or article['title']
+                        logger.info(f"   {i}. [{article['source']}] {title_display[:50]}... (점수: {article.get('score', 0)})")
             except Exception as e:
                 logger.error(f"RSS 수집 오류: {e}")
             
@@ -102,6 +104,12 @@ class MilitaryNewsAggregator:
         """시스템 상태 출력"""
         stats = self.db.get_statistics()
         logger.info(f"📊 통계: 총 {stats['total']}개 | 오늘 {stats['today']}개")
+        
+        # DeepL 사용량 출력
+        usage = self.translator.get_usage()
+        if usage:
+            percent = (usage['used'] / usage['limit']) * 100
+            logger.info(f"🌐 DeepL: {usage['used']:,} / {usage['limit']:,} ({percent:.1f}%)")
 
 
 if __name__ == '__main__':

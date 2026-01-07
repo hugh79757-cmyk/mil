@@ -3,421 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="300">
-    <title>Military News Aggregator - 밀리터리 뉴스</title>
+    <title>Military News Dashboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        h1 { 
-            color: #2d3748; 
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #718096;
-            font-size: 1.1em;
-            margin-bottom: 30px;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
             padding: 25px;
             border-radius: 15px;
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin-bottom: 25px;
+            border: 1px solid #333;
         }
-        .stat-card h3 { 
-            font-size: 0.9em; 
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-        .stat-card p { 
-            font-size: 2.5em; 
-            font-weight: bold;
-        }
-        .articles {
-            margin-top: 40px;
-        }
-        .articles h2 {
-            color: #2d3748;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
-        }
-        .article {
-            background: #f7fafc;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 12px;
-            border-left: 4px solid #667eea;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .article:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .article h3 { 
-            color: #2d3748; 
-            font-size: 1.15em; 
+        h1 {
+            font-size: 2em;
             margin-bottom: 8px;
-            line-height: 1.4;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .article a { 
-            color: #2d3748;
+        .subtitle { color: #888; }
+        .stats { display: flex; gap: 15px; margin-top: 15px; }
+        .stat-box {
+            background: rgba(255,255,255,0.05);
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+        .stat-number { font-size: 1.8em; font-weight: bold; color: #00d4ff; }
+        .stat-label { color: #888; font-size: 0.85em; }
+        
+        .main-content { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        @media (max-width: 900px) {
+            .main-content { grid-template-columns: 1fr; }
+        }
+        
+        .panel {
+            background: #111;
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #222;
+        }
+        .panel h2 {
+            color: #fff;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+            font-size: 1.1em;
+        }
+        
+        .article-list { max-height: 600px; overflow-y: auto; }
+        .article-item {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #222;
+            transition: all 0.3s;
+        }
+        .article-item:hover {
+            background: #252525;
+            border-color: #00d4ff;
+            transform: translateX(5px);
+        }
+        .article-title { 
+            font-weight: 600; 
+            margin-bottom: 6px; 
+            color: #fff; 
+            font-size: 0.95em;
+        }
+        .article-title a {
+            color: #fff;
             text-decoration: none;
         }
-        .article a:hover {
-            color: #667eea;
+        .article-title a:hover {
+            color: #00d4ff;
         }
-        .meta { 
-            color: #718096; 
+        .article-title-ko { 
+            color: #00d4ff; 
+            font-size: 0.9em; 
+            margin-bottom: 8px; 
+        }
+        .article-meta { 
+            display: flex; 
+            gap: 10px; 
+            font-size: 0.8em; 
+            color: #666;
+            flex-wrap: wrap;
+        }
+        .source { 
+            background: #2a2a2a; 
+            padding: 3px 8px; 
+            border-radius: 5px; 
+            color: #888; 
+        }
+        .score { color: #ffd700; }
+        .date { color: #666; }
+        
+        .wikidata-section { margin-top: 10px; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+        .tab {
+            padding: 8px 14px;
+            background: #222;
+            border-radius: 6px;
+            cursor: pointer;
             font-size: 0.85em;
-            display: flex;
-            gap: 15px;
-            margin-top: 8px;
+            border: none;
+            color: #e0e0e0;
         }
-        .meta span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .source-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            background: #667eea;
-            color: white;
-            border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: 600;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
-            color: #718096;
-        }
-        .last-update {
-            background: #edf2f7;
-            padding: 10px;
+        .tab.active { background: #7b2cbf; }
+        .tab:hover { background: #333; }
+        .tab.active:hover { background: #7b2cbf; }
+        
+        .wikidata-item {
+            background: #1a1a1a;
+            padding: 12px;
             border-radius: 8px;
-            text-align: center;
-            color: #4a5568;
-            font-size: 0.9em;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
+            border-left: 3px solid #7b2cbf;
+        }
+        .wikidata-title { color: #fff; font-weight: 600; font-size: 0.9em; }
+        .wikidata-meta { color: #888; font-size: 0.8em; margin-top: 4px; }
+        
+        .loading { text-align: center; padding: 30px; color: #666; }
+        .error { text-align: center; padding: 30px; color: #ff6b6b; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+        .refresh-btn:hover { opacity: 0.8; }
+        
+        .last-update {
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🪖 Military News Aggregator</h1>
-        <p class="subtitle">실시간 밀리터리 뉴스 및 무기체계 정보 자동 수집 시스템</p>
+        <header>
+            <h1>🎖️ Military News Dashboard</h1>
+            <p class="subtitle">전쟁사 × 무기 분석 × 방산주 투자 콘텐츠</p>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="total-count">-</div>
+                    <div class="stat-label">총 기사</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="today-count">-</div>
+                    <div class="stat-label">오늘 수집</div>
+                </div>
+            </div>
+        </header>
         
-        <div class="last-update">
-            ⏰ 최종 업데이트: 2026-01-07 20:08:08
-        </div>
-        
-        <div class="stats">
-            <div class="stat-card">
-                <h3>📰 총 수집 기사</h3>
-                <p>31</p>
+        <div class="main-content">
+            <div class="panel">
+                <h2>📰 최신 뉴스</h2>
+                <div class="article-list" id="article-list">
+                    <div class="loading">로딩 중...</div>
+                </div>
+                <div class="last-update" id="last-update"></div>
             </div>
-            <div class="stat-card">
-                <h3>🆕 오늘 수집</h3>
-                <p>31</p>
-            </div>
-            <div class="stat-card">
-                <h3>📡 RSS 소스</h3>
-                <p>3개</p>
-            </div>
-            <div class="stat-card">
-                <h3>📚 Wikipedia 모니터링</h3>
-                <p>3개</p>
-            </div>
-        </div>
-        
-        <div class="articles">
-            <h2>📰 최신 밀리터리 뉴스</h2>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107010400315" target="_blank">Lee returns home from China trip focused on improving ties</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:53:07</span>
+            
+            <div class="panel">
+                <h2>🌍 전쟁사 데이터 <button class="refresh-btn" onclick="loadWikidata(currentTab)">새로고침</button></h2>
+                <div class="tabs">
+                    <button class="tab active" onclick="loadWikidata('korea')">🇰🇷 한국</button>
+                    <button class="tab" onclick="loadWikidata('us')">🇺🇸 미국</button>
+                    <button class="tab" onclick="loadWikidata('tank')">🛡️ 전차전</button>
+                    <button class="tab" onclick="loadWikidata('air')">✈️ 공중전</button>
+                </div>
+                <div class="wikidata-section" id="wikidata-list">
+                    <div class="loading">로딩 중...</div>
                 </div>
             </div>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107010300315" target="_blank">Seoul seeks Beijing's support in tracking down Chinese suspect behind Coupang data breach: minister</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:48:02</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107000451315" target="_blank">Lee marks 100th anniv. of establishment of Korean provisional gov't building in Shanghai</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:48:02</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107003952315" target="_blank">(2nd LD) Acting U.S. ambassador leaves post in S. Korea: foreign ministry</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:48:02</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107010200315" target="_blank">Colby seeks visits to S. Korea, Japan in late Jan.: sources</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:48:02</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107010100315" target="_blank">Defense chief reaffirms continued S. Korea-U.S. combined drills despite calls for adjustment</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:48:02</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107009900315" target="_blank">First lady promotes Korean cosmetics at K-beauty event in Shanghai</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:48:02</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107009000315" target="_blank">Anti-skid system malfunction behind recent T-50 trainer jet accident: Air Force</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:48:02</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107009100315" target="_blank">Yonhap News Summary</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:48:02</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107008200315" target="_blank">Envisioned Lee-Takaichi summit to have meaningful impact for bilateral ties: envoy</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:48:02</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://en.yna.co.kr/view/AEN20260107008400315" target="_blank">Lee says China expected to remove part of disputed steel structures from overlapping waters in Yellow Sea</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Yonhap News</span>
-                    <span>📅 2026-01-07 12:48:02</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.militarytimes.com/news/pentagon-congress/2026/01/07/dod-launches-review-of-effectiveness-of-women-in-ground-combat-roles/" target="_blank">DOD launches review of ‘effectiveness’ of women in ground combat roles</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Military Times</span>
-                    <span>📅 2026-01-07 12:48:01</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.militarytimes.com/news/your-military/2026/01/06/this-was-surgical-the-tactics-behind-the-maduro-mission/" target="_blank">‘This was surgical’: The tactics behind the Maduro mission</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Military Times</span>
-                    <span>📅 2026-01-07 12:48:01</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.militarytimes.com/veterans/2026/01/06/state-veterans-cemeteries-receive-grants-for-improvement-expansion/" target="_blank">State veterans cemeteries receive grants for improvement, expansion</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Military Times</span>
-                    <span>📅 2026-01-07 12:48:01</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.militarytimes.com/air/2026/01/06/us-air-force-awards-boeing-2b-contract-to-begin-b-52-engine-upgrades/" target="_blank">US Air Force awards Boeing $2B contract to begin B-52 engine upgrades</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Military Times</span>
-                    <span>📅 2026-01-07 12:48:01</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.militarytimes.com/veterans/military-history/2026/01/06/he-turned-down-a-trip-home-from-the-korean-war-then-earned-the-moh/" target="_blank">He turned down a trip home from the Korean War, then earned the MOH</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Military Times</span>
-                    <span>📅 2026-01-07 12:48:01</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.militarytimes.com/news/pentagon-congress/2026/01/06/why-trump-is-claiming-the-us-needs-greenland-for-arctic-security/" target="_blank">Why Trump is claiming the US ‘needs’ Greenland for Arctic security</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Military Times</span>
-                    <span>📅 2026-01-07 12:48:01</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.militarytimes.com/opinion/2026/01/06/why-the-us-should-consider-testing-its-nuclear-arsenal/" target="_blank">Why the US should resume testing its nuclear arsenal</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Military Times</span>
-                    <span>📅 2026-01-07 12:48:01</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.militarytimes.com/opinion/2026/01/05/can-the-us-run-venezuela-military-force-doesnt-equal-legitimacy/" target="_blank">Can the US ‘run’ Venezuela? Military force doesn’t equal legitimacy</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Military Times</span>
-                    <span>📅 2026-01-07 12:48:01</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.militarytimes.com/news/your-marine-corps/2026/01/05/marine-master-sergeant-redesignated-to-first-sergeant-in-pilot-program/" target="_blank">Marine master sergeant redesignated to first sergeant in pilot program</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Military Times</span>
-                    <span>📅 2026-01-07 12:48:01</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.militarytimes.com/air/2026/01/05/videos-suggest-stealthy-air-force-drone-flew-recon-for-maduro-capture/" target="_blank">Videos suggest stealthy Air Force drone flew recon for Maduro capture</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Military Times</span>
-                    <span>📅 2026-01-07 12:48:01</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.defenseone.com/threats/2026/01/white-house-floats-military-action-take-greenland/410503/" target="_blank">White House floats military action to take Greenland</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Defense One</span>
-                    <span>📅 2026-01-07 12:47:59</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.defenseone.com/threats/2026/01/analysts-watch-heightened-cyber-disinformation-campaigns-following-venezuela-raid/410497/" target="_blank">US, observers watch for cyber, disinformation campaigns in wake of Venezuela raid</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Defense One</span>
-                    <span>📅 2026-01-07 12:47:59</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.defenseone.com/threats/2026/01/the-d-brief-january-06-2026/410476/" target="_blank">The D Brief: Post-Maduro moves; Europe unites over Greenland; Marines’ ‘hidden crisis’; Jan. 6, remembered; And a bit more.</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Defense One</span>
-                    <span>📅 2026-01-07 12:47:59</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.defenseone.com/policy/2026/01/hegseth-aims-dock-sen-kellys-pension-illegal-orders-video/410470/" target="_blank">Hegseth aims to dock Sen. Kelly's pension for illegal-orders video</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Defense One</span>
-                    <span>📅 2026-01-07 12:47:59</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.defenseone.com/ideas/2026/01/can-us-run-venezuela-military-force-can-topple-dictator-it-cannot-create-political-authority-or-legitimacy/410451/" target="_blank">Military force can topple a dictator, but it cannot create political authority or legitimacy</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Defense One</span>
-                    <span>📅 2026-01-07 12:47:59</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.defenseone.com/threats/2026/01/the-d-brief-january-05-2026/410450/" target="_blank">The D Brief: Trump threatens more countries after Maduro abduction; SCOTUS rejects Guard deployment; Nigerian-strike fallout; 2025 scorecard; And a bit more.</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Defense One</span>
-                    <span>📅 2026-01-07 12:47:59</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.defenseone.com/policy/2026/01/line-crossed-lawmakers-lawyers-anti-war-advocates-alarmed-venezuela-overthrow/410442/" target="_blank">‘A line crossed’: Lawmakers, lawyers, anti-war advocates alarmed by Venezuela overthrow</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Defense One</span>
-                    <span>📅 2026-01-07 12:47:59</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.defenseone.com/threats/2026/01/inside-absolute-resolve-regime-change-assault-venezuela/410440/" target="_blank">How ‘Absolute Resolve’ harnessed 150 aircraft and more to launch a regime change in Venezuela</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Defense One</span>
-                    <span>📅 2026-01-07 12:47:59</span>
-                </div>
-            </div>
-
-            <div class="article">
-                <h3><a href="https://www.defenseone.com/threats/2026/01/us-spy-agencies-contributed-operation-captured-maduro/410437/" target="_blank">US spy agencies contributed to operation that captured Maduro</a></h3>
-                <div class="meta">
-                    <span class="source-badge">Defense One</span>
-                    <span>📅 2026-01-07 12:47:59</span>
-                </div>
-            </div>
-
-        </div>
-        
-        <div class="footer">
-            <p>🔗 <a href="https://github.com/hugh79757-cmyk/mil" style="color: #667eea; text-decoration: none;">GitHub Repository</a></p>
-            <p style="margin-top: 10px; font-size: 0.85em;">Powered by RSS Feeds + Wikipedia EventStreams</p>
         </div>
     </div>
-
-    <!-- Google Translate -->
-    <div id="google_translate_element" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);"></div>
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'ko',
-                includedLanguages: 'ko,en,ja,zh-CN',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
+    
+    <script>
+        let currentTab = 'korea';
+        const WIKIDATA_ENDPOINT = 'https://query.wikidata.org/sparql';
+        
+        // 기사 데이터 (정적)
+        const articles = [{"id": 483, "title": "During his 78th mission, this pilot came up against an unexpected foe", "title_ko": "78번째 임무에서 이 파일럿은 예상치 못한 적과 마주쳤습니다.", "url": "https://www.militarytimes.com/veterans/military-history/2026/01/07/during-his-78th-mission-this-pilot-came-up-against-an-unexpected-foe/", "source": "Military Times", "score": 0, "created_at": "2026-01-07 16:04:58"}, {"id": 47, "title": "Ukraine’s allies praise major progress on defense guarantees", "title_ko": "우크라이나의 동맹국들은 국방 보장에 대한 주요 진전을 칭찬합니다.", "url": "https://www.defensenews.com/global/europe/2026/01/07/ukraines-allies-praise-major-progress-on-defense-guarantees/", "source": "Defense News", "score": 5, "created_at": "2026-01-07 15:29:11"}, {"id": 48, "title": "‘This was surgical’: The tactics behind the Maduro mission", "title_ko": "'이것은 수술이었다': 마두로 작전 이면의 전술", "url": "https://www.defensenews.com/news/your-military/2026/01/06/this-was-surgical-the-tactics-behind-the-maduro-mission/", "source": "Defense News", "score": 5, "created_at": "2026-01-07 15:29:11"}, {"id": 49, "title": "Lockheed to triple production of interceptor missiles in Pentagon deal", "title_ko": "록히드, 국방부 거래에서 요격 미사일 생산량을 세 배로 늘리다", "url": "https://www.defensenews.com/newsletters/2026/01/06/lockheed-to-triple-production-of-interceptor-missiles-in-pentagon-deal/", "source": "Defense News", "score": 10, "created_at": "2026-01-07 15:29:11"}, {"id": 50, "title": "US Air Force awards Boeing $2B contract to begin B-52 engine upgrades", "title_ko": "미 공군, B-52 엔진 업그레이드 시작을 위해 보잉과 20억 달러 계약 체결", "url": "https://www.defensenews.com/air/2026/01/06/us-air-force-awards-boeing-2b-contract-to-begin-b-52-engine-upgrades/", "source": "Defense News", "score": 20, "created_at": "2026-01-07 15:29:11"}, {"id": 51, "title": "Elbit sells new batch of Iron Fist protective kit for CV90 vehicles", "title_ko": "엘빗, CV90 차량용 아이언 피스트 보호 키트 신제품 출시", "url": "https://www.defensenews.com/global/mideast-africa/2026/01/06/elbit-sells-new-batch-of-iron-fist-protective-kit-for-cv90-vehicles/", "source": "Defense News", "score": 0, "created_at": "2026-01-07 15:29:11"}, {"id": 52, "title": "US Venezuela blitz spooks some Canadian officials", "title_ko": "미국의 베네수엘라 공습으로 일부 캐나다 관리들이 겁을 먹었습니다.", "url": "https://www.defensenews.com/global/the-americas/2026/01/06/us-venezuela-blitz-spooks-some-canadian-officials/", "source": "Defense News", "score": 0, "created_at": "2026-01-07 15:29:11"}, {"id": 53, "title": "Why Trump is claiming the US ‘needs’ Greenland for Arctic security", "title_ko": "트럼프가 북극 안보를 위해 미국이 그린란드가 '필요하다'고 주장하는 이유", "url": "https://www.defensenews.com/news/pentagon-congress/2026/01/06/why-trump-is-claiming-the-us-needs-greenland-for-arctic-security/", "source": "Defense News", "score": 0, "created_at": "2026-01-07 15:29:11"}, {"id": 54, "title": "India boosts Southeast Asia military ties, Indo-Pacific role", "title_ko": "인도, 동남아시아 군사 관계 및 인도 태평양 역할 강화", "url": "https://www.defensenews.com/global/asia-pacific/2026/01/06/india-boosts-southeast-asia-military-ties-indo-pacific-role/", "source": "Defense News", "score": 10, "created_at": "2026-01-07 15:29:11"}, {"id": 55, "title": "After US move on Venezuela, analysts see rules-based order at risk", "title_ko": "미국의 베네수엘라 공격 이후, 애널리스트들은 규칙 기반 질서가 위험에 처했다고 보고 있습니다.", "url": "https://www.defensenews.com/global/europe/2026/01/06/after-us-move-on-venezuela-analysts-see-rules-based-order-at-risk/", "source": "Defense News", "score": 5, "created_at": "2026-01-07 15:29:11"}, {"id": 56, "title": "Why the US should resume testing its nuclear arsenal", "title_ko": "미국이 핵무기 실험을 재개해야 하는 이유", "url": "https://www.defensenews.com/opinion/2026/01/06/why-the-us-should-consider-testing-its-nuclear-arsenal/", "source": "Defense News", "score": 10, "created_at": "2026-01-07 15:29:11"}, {"id": 57, "title": "Can the US ‘run’ Venezuela? Military force doesn’t equal legitimacy", "title_ko": "미국이 베네수엘라를 '운영'할 수 있을까요? 군사력이 정당성과 같지 않은 이유", "url": "https://www.defensenews.com/opinion/2026/01/05/can-the-us-run-venezuela-military-force-doesnt-equal-legitimacy/", "source": "Defense News", "score": 5, "created_at": "2026-01-07 15:29:11"}, {"id": 58, "title": "Videos suggest stealthy Air Force drone flew recon for Maduro capture", "title_ko": "마두로 생포를 위해 정찰 비행을 한 공군 스텔스 드론의 영상", "url": "https://www.defensenews.com/air/2026/01/05/videos-suggest-stealthy-air-force-drone-flew-recon-for-maduro-capture/", "source": "Defense News", "score": 15, "created_at": "2026-01-07 15:29:11"}, {"id": 59, "title": "Space warfare in 2026: A pivotal year for US readiness", "title_ko": "2026년 우주 전쟁: 미국의 준비 태세를 위한 중추적인 해", "url": "https://www.defensenews.com/space/2026/01/05/space-warfare-in-2026-a-pivotal-year-for-us-readiness/", "source": "Defense News", "score": 0, "created_at": "2026-01-07 15:29:11"}, {"id": 60, "title": "Monroe to Donroe: A ‘dead’ doctrine’s revival for current operations", "title_ko": "먼로에서 돈로까지: 현재 작전을 위한 '죽은' 교리의 부활", "url": "https://www.defensenews.com/veterans/military-history/2026/01/05/monroe-to-donroe-a-dead-doctrines-revival-for-current-operations/", "source": "Defense News", "score": 0, "created_at": "2026-01-07 15:29:11"}, {"id": 61, "title": "North Korea says latest tests involve hypersonic weapons system", "title_ko": "북한, 최근 실험에 극초음속 무기 시스템 관련 있다고 주장", "url": "https://www.defensenews.com/global/asia-pacific/2026/01/05/north-korea-says-latest-tests-involve-hypersonic-weapons-system/", "source": "Defense News", "score": 20, "created_at": "2026-01-07 15:29:11"}, {"id": 62, "title": "Thailand’s tilt toward China tests treaty alliance with US", "title_ko": "중국으로 기울어진 태국, 미국과의 조약 동맹을 시험하다", "url": "https://www.defensenews.com/global/asia-pacific/2026/01/05/thailands-tilt-toward-china-tests-treaty-alliance-with-us/", "source": "Defense News", "score": 0, "created_at": "2026-01-07 15:29:11"}, {"id": 63, "title": "Philippine Navy scrambles to shield vital undersea cables from spies", "title_ko": "필리핀 해군이 스파이로부터 중요한 해저 케이블을 보호하기 위해 출격합니다.", "url": "https://www.defensenews.com/global/asia-pacific/2026/01/05/philippine-navy-scrambles-to-shield-vital-undersea-cables-from-spies/", "source": "Defense News", "score": 20, "created_at": "2026-01-07 15:29:11"}, {"id": 64, "title": "Trump’s Venezuela takeover fuels fresh angst about a US Greenland grab", "title_ko": "트럼프의 베네수엘라 인수는 미국의 그린란드 점령에 대한 새로운 불안을 불러 일으켰습니다.", "url": "https://www.defensenews.com/global/europe/2026/01/05/trumps-venezuela-takeover-fuels-fresh-angst-about-a-us-greenland-grab/", "source": "Defense News", "score": 0, "created_at": "2026-01-07 15:29:11"}, {"id": 65, "title": "Cuba says 32 Cuban officers were killed in US operation in Venezuela", "title_ko": "쿠바, 베네수엘라에서 미국 작전으로 쿠바 장교 32 명이 사망했다고 밝혔습니다.", "url": "https://www.defensenews.com/global/the-americas/2026/01/05/cuba-says-32-cuban-officers-were-killed-in-us-operation-in-venezuela/", "source": "Defense News", "score": 5, "created_at": "2026-01-07 15:29:11"}, {"id": 66, "title": "Maduro arrives in US, Trump says operation will let US ‘run’ Venezuela", "title_ko": "마두로, 미국 도착, 트럼프, 작전으로 미국이 베네수엘라를 '운영'할 수 있다고 말함", "url": "https://www.defensenews.com/news/pentagon-congress/2026/01/04/maduro-arrives-in-us-trump-says-operation-will-let-us-run-venezuela/", "source": "Defense News", "score": 0, "created_at": "2026-01-07 15:29:11"}, {"id": 41, "title": "Colby seeks visits to S. Korea, Japan in late Jan.: sources", "title_ko": "콜비, 1월 말 한국-일본 방문 추진: 소식통", "url": "https://en.yna.co.kr/view/AEN20260107010200315", "source": "Yonhap News", "score": 5, "created_at": "2026-01-07 15:29:10"}, {"id": 42, "title": "Defense chief reaffirms continued S. Korea-U.S. combined drills despite calls for adjustment", "title_ko": "국방부 장관, 조정 요구에도 불구하고 한미 연합훈련 지속 재확인", "url": "https://en.yna.co.kr/view/AEN20260107010100315", "source": "Yonhap News", "score": 5, "created_at": "2026-01-07 15:29:10"}, {"id": 43, "title": "Anti-skid system malfunction behind recent T-50 trainer jet accident: Air Force", "title_ko": "최근 T-50 훈련기 사고의 원인은 미끄럼 방지 시스템 오작동입니다: 공군", "url": "https://en.yna.co.kr/view/AEN20260107009000315", "source": "Yonhap News", "score": 5, "created_at": "2026-01-07 15:29:10"}, {"id": 44, "title": "Envisioned Lee-Takaichi summit to have meaningful impact for bilateral ties: envoy", "title_ko": "이 씨-다카이치 정상회담, 양국 관계에 의미 있는 영향 미칠 것으로 기대: 특사", "url": "https://en.yna.co.kr/view/AEN20260107008200315", "source": "Yonhap News", "score": 10, "created_at": "2026-01-07 15:29:10"}, {"id": 45, "title": "(LEAD) 4 Army officers reportedly given 3-month suspension over martial law involvement", "title_ko": "(리드) 육군 장교 4 명, 계엄령 연루로 3 개월 정직 처분을받은 것으로 알려짐", "url": "https://en.yna.co.kr/view/AEN20260107006551315", "source": "Yonhap News", "score": 5, "created_at": "2026-01-07 15:29:10"}, {"id": 46, "title": "4 Army officers given severe disciplinary action over martial law involvement", "title_ko": "계엄령 연루로 육군 장교 4명이 중징계를 받았습니다.", "url": "https://en.yna.co.kr/view/AEN20260107006500315", "source": "Yonhap News", "score": 10, "created_at": "2026-01-07 15:29:10"}, {"id": 1, "title": "White House floats military action to take Greenland", "title_ko": "백악관, 그린란드 점령을 위한 군사 행동 추진", "url": "https://www.defenseone.com/threats/2026/01/white-house-floats-military-action-take-greenland/410503/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 2, "title": "US, observers watch for cyber, disinformation campaigns in wake of Venezuela raid", "title_ko": "미국, 베네수엘라 공습 이후 사이버, 허위 정보 캠페인에 대한 관찰자 감시", "url": "https://www.defenseone.com/threats/2026/01/analysts-watch-heightened-cyber-disinformation-campaigns-following-venezuela-raid/410497/", "source": "Defense One", "score": 0, "created_at": "2026-01-07 15:29:09"}, {"id": 3, "title": "The D Brief: Post-Maduro moves; Europe unites over Greenland; Marines’ ‘hidden crisis’; Jan. 6, remembered; And a bit more.", "title_ko": "디 브리프: 마두로 이후 움직임, 그린란드를 둘러싼 유럽 연합, 해병대의 '숨겨진 위기', 1월 6일, 기억되는 1월 6일, 그리고 그 밖의 소식.", "url": "https://www.defenseone.com/threats/2026/01/the-d-brief-january-06-2026/410476/", "source": "Defense One", "score": 0, "created_at": "2026-01-07 15:29:09"}, {"id": 4, "title": "Hegseth aims to dock Sen. Kelly's pension for illegal-orders video", "title_ko": "헤그세스, 불법 주문 동영상으로 켈리 상원의원의 연금 지급 중단을 노립니다.", "url": "https://www.defenseone.com/policy/2026/01/hegseth-aims-dock-sen-kellys-pension-illegal-orders-video/410470/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 5, "title": "Military force can topple a dictator, but it cannot create political authority or legitimacy", "title_ko": "군사력은 독재자를 무너뜨릴 수 있지만, 정치적 권위나 정당성을 창출할 수는 없습니다.", "url": "https://www.defenseone.com/ideas/2026/01/can-us-run-venezuela-military-force-can-topple-dictator-it-cannot-create-political-authority-or-legitimacy/410451/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 6, "title": "The D Brief: Trump threatens more countries after Maduro abduction; SCOTUS rejects Guard deployment; Nigerian-strike fallout; 2025 scorecard; And a bit more.", "title_ko": "디 브리프: 트럼프, 마두로 납치 후 더 많은 국가 위협, SCOTUS, 방위군 배치 거부, 나이지리아 파업 후유증, 2025년 성적표, 그리고 조금 더.", "url": "https://www.defenseone.com/threats/2026/01/the-d-brief-january-05-2026/410450/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 7, "title": "‘A line crossed’: Lawmakers, lawyers, anti-war advocates alarmed by Venezuela overthrow", "title_ko": "'선을 넘었다': 베네수엘라 전복에 놀란 의원, 변호사, 반전 옹호자들", "url": "https://www.defenseone.com/policy/2026/01/line-crossed-lawmakers-lawyers-anti-war-advocates-alarmed-venezuela-overthrow/410442/", "source": "Defense One", "score": 0, "created_at": "2026-01-07 15:29:09"}, {"id": 8, "title": "How ‘Absolute Resolve’ harnessed 150 aircraft and more to launch a regime change in Venezuela", "title_ko": "'앱솔루트 레졸루션'이 150대의 항공기 등을 활용하여 베네수엘라에서 정권 교체를 이끈 방법", "url": "https://www.defenseone.com/threats/2026/01/inside-absolute-resolve-regime-change-assault-venezuela/410440/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 9, "title": "US spy agencies contributed to operation that captured Maduro", "title_ko": "마두로 체포 작전에 기여한 미국 스파이 기관들", "url": "https://www.defenseone.com/threats/2026/01/us-spy-agencies-contributed-operation-captured-maduro/410437/", "source": "Defense One", "score": 0, "created_at": "2026-01-07 15:29:09"}, {"id": 10, "title": "The US will ‘run’ Venezuela for now, Trump says after armed assault on capital", "title_ko": "미국은 당분간 베네수엘라를 '운영'할 것이라고 트럼프는 수도에 대한 무력 공격 후 말했다.", "url": "https://www.defenseone.com/threats/2026/01/us-will-run-venezuela-now-trump-says-after-armed-assault-capital/410436/", "source": "Defense One", "score": 0, "created_at": "2026-01-07 15:29:09"}, {"id": 11, "title": "2025 in review: Ideas", "title_ko": "2025년 검토 중: 아이디어", "url": "https://www.defenseone.com/ideas/2026/01/2025-review/410393/", "source": "Defense One", "score": 0, "created_at": "2026-01-07 15:29:09"}, {"id": 12, "title": "2025 in review: defense systems", "title_ko": "2025년 검토: 방위 시스템", "url": "https://www.defenseone.com/technology/2026/01/2025-review/410396/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 13, "title": "Trump gives up on National Guard deployment in 3 cities", "title_ko": "트럼프, 3개 도시에 방위군 배치 포기", "url": "https://www.defenseone.com/policy/2025/12/trump-gives-national-guard-deployment-3-cities/410439/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 14, "title": "2025 in review: Space Force", "title_ko": "2025년 검토 중: 스페이스 포스", "url": "https://www.defenseone.com/policy/2025/12/2025-review/410395/", "source": "Defense One", "score": 0, "created_at": "2026-01-07 15:29:09"}, {"id": 15, "title": "2025 in review: Marine Corps", "title_ko": "2025년 검토 중: 해병대", "url": "https://www.defenseone.com/policy/2025/12/2025-review/410394/", "source": "Defense One", "score": 0, "created_at": "2026-01-07 15:29:09"}, {"id": 16, "title": "2025 in review: Air Force", "title_ko": "2025년 검토 중: 공군", "url": "https://www.defenseone.com/policy/2025/12/2025-review-air-force/410392/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 17, "title": "2025 in review: Navy", "title_ko": "2025년 검토 중: 해군", "url": "https://www.defenseone.com/policy/2025/12/2025-review-navy/410390/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 18, "title": "Inside China’s nascent, AI-powered military logistics system", "title_ko": "중국의 초기 AI 기반 군 물류 시스템 내부 모습", "url": "https://www.defenseone.com/threats/2025/12/inside-chinas-nascent-ai-powered-military-logistics-system/410378/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 19, "title": "2025 in review: Army", "title_ko": "2025년 검토 중: 육군", "url": "https://www.defenseone.com/ideas/2025/12/2025-review-army/410389/", "source": "Defense One", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 20, "title": "2025 in review: tech", "title_ko": "2025년 검토: 기술", "url": "https://www.defenseone.com/technology/2025/12/2025-review-tech/410388/", "source": "Defense One", "score": 0, "created_at": "2026-01-07 15:29:09"}, {"id": 21, "title": "DOD launches review of ‘effectiveness’ of women in ground combat roles", "title_ko": "국방부, 지상 전투 역할에서 여성의 '효과성'에 대한 검토 시작", "url": "https://www.militarytimes.com/news/pentagon-congress/2026/01/07/dod-launches-review-of-effectiveness-of-women-in-ground-combat-roles/", "source": "Military Times", "score": 10, "created_at": "2026-01-07 15:29:09"}, {"id": 22, "title": "‘This was surgical’: The tactics behind the Maduro mission", "title_ko": "'이것은 수술이었다': 마두로 작전 이면의 전술", "url": "https://www.militarytimes.com/news/your-military/2026/01/06/this-was-surgical-the-tactics-behind-the-maduro-mission/", "source": "Military Times", "score": 5, "created_at": "2026-01-07 15:29:09"}, {"id": 23, "title": "State veterans cemeteries receive grants for improvement, expansion", "title_ko": "주립 참전용사 묘지 개선 및 확장을 위한 보조금 지원", "url": "https://www.militarytimes.com/veterans/2026/01/06/state-veterans-cemeteries-receive-grants-for-improvement-expansion/", "source": "Military Times", "score": 0, "created_at": "2026-01-07 15:29:09"}];
+        
+        // 통계 표시
+        document.getElementById('total-count').textContent = articles.length;
+        const today = new Date().toISOString().split('T')[0];
+        const todayCount = articles.filter(a => a.created_at && a.created_at.startsWith(today)).length;
+        document.getElementById('today-count').textContent = todayCount;
+        
+        // 기사 목록 표시
+        const list = document.getElementById('article-list');
+        list.innerHTML = '';
+        
+        if (articles.length === 0) {
+            list.innerHTML = '<div class="loading">기사가 없습니다</div>';
+        } else {
+            articles.slice(0, 30).forEach(article => {
+                const item = document.createElement('div');
+                item.className = 'article-item';
+                const date = article.created_at ? article.created_at.split(' ')[0] : '';
+                item.innerHTML = `
+                    <div class="article-title"><a href="${article.url}" target="_blank">${article.title}</a></div>
+                    ${article.title_ko ? `<div class="article-title-ko">${article.title_ko}</div>` : ''}
+                    <div class="article-meta">
+                        <span class="source">${article.source}</span>
+                        <span class="score">⭐ ${article.score}점</span>
+                        <span class="date">${date}</span>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
         }
+        
+        // 마지막 업데이트 시간
+        if (articles.length > 0 && articles[0].created_at) {
+            document.getElementById('last-update').textContent = '마지막 업데이트: ' + articles[0].created_at;
+        }
+        
+        // Wikidata SPARQL 쿼리
+        async function queryWikidata(sparql) {
+            try {
+                const response = await fetch(WIKIDATA_ENDPOINT + '?format=json&query=' + encodeURIComponent(sparql));
+                const data = await response.json();
+                return data.results.bindings;
+            } catch (e) {
+                console.error('Wikidata error:', e);
+                return [];
+            }
+        }
+        
+        // 전투 목록 로드
+        async function loadWikidata(type) {
+            currentTab = type;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const list = document.getElementById('wikidata-list');
+            list.innerHTML = '<div class="loading">로딩 중...</div>';
+            
+            let sparql = '';
+            
+            if (type === 'korea') {
+                sparql = `
+                    SELECT ?battle ?battleLabel ?date ?warLabel WHERE {
+                      ?battle wdt:P31 wd:Q178561.
+                      ?battle wdt:P710 wd:Q884.
+                      OPTIONAL { ?battle wdt:P585 ?date. }
+                      OPTIONAL { ?battle wdt:P361 ?war. }
+                      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,ko". }
+                    }
+                    ORDER BY DESC(?date)
+                    LIMIT 15
+                `;
+            } else if (type === 'us') {
+                sparql = `
+                    SELECT ?battle ?battleLabel ?date ?warLabel WHERE {
+                      ?battle wdt:P31 wd:Q178561.
+                      ?battle wdt:P710 wd:Q30.
+                      OPTIONAL { ?battle wdt:P585 ?date. }
+                      OPTIONAL { ?battle wdt:P361 ?war. }
+                      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,ko". }
+                    }
+                    ORDER BY DESC(?date)
+                    LIMIT 15
+                `;
+            } else if (type === 'tank') {
+                sparql = `
+                    SELECT ?battle ?battleLabel ?date ?warLabel WHERE {
+                      ?battle wdt:P31 wd:Q178561.
+                      ?battle rdfs:label ?label.
+                      FILTER(LANG(?label) = "en")
+                      FILTER(CONTAINS(LCASE(?label), "tank") || CONTAINS(LCASE(?label), "armour"))
+                      OPTIONAL { ?battle wdt:P585 ?date. }
+                      OPTIONAL { ?battle wdt:P361 ?war. }
+                      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,ko". }
+                    }
+                    ORDER BY DESC(?date)
+                    LIMIT 15
+                `;
+            } else if (type === 'air') {
+                sparql = `
+                    SELECT ?battle ?battleLabel ?date ?warLabel WHERE {
+                      ?battle wdt:P31 wd:Q178561.
+                      ?battle rdfs:label ?label.
+                      FILTER(LANG(?label) = "en")
+                      FILTER(CONTAINS(LCASE(?label), "air") || CONTAINS(LCASE(?label), "aerial"))
+                      OPTIONAL { ?battle wdt:P585 ?date. }
+                      OPTIONAL { ?battle wdt:P361 ?war. }
+                      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,ko". }
+                    }
+                    ORDER BY DESC(?date)
+                    LIMIT 15
+                `;
+            }
+            
+            const results = await queryWikidata(sparql);
+            
+            list.innerHTML = '';
+            if (results.length === 0) {
+                list.innerHTML = '<div class="loading">데이터 없음</div>';
+                return;
+            }
+            
+            results.forEach(b => {
+                const item = document.createElement('div');
+                item.className = 'wikidata-item';
+                const battleLabel = b.battleLabel ? b.battleLabel.value : 'N/A';
+                const warLabel = b.warLabel ? b.warLabel.value : '';
+                const date = b.date ? b.date.value.substring(0, 10) : '';
+                item.innerHTML = `
+                    <div class="wikidata-title">${battleLabel}</div>
+                    <div class="wikidata-meta">${warLabel}${warLabel && date ? ' · ' : ''}${date}</div>
+                `;
+                list.appendChild(item);
+            });
+        }
+        
+        // 초기 로드
+        loadWikidata('korea');
     </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
 </body>
 </html>

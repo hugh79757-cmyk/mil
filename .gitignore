@@ -7,3 +7,20 @@ data/logs/
 .env
 .vscode/
 .DS_Store
+# 데이터베이스
+data/news.db
+data/*.db
+
+# 로그
+*.log
+data/logs/
+
+# 가상환경
+venv/
+
+# 캐시
+__pycache__/
+*.pyc
+
+# 블로그 출력
+blog_posts/

@@ -1,21 +1,12 @@
 #!/bin/bash
-echo "�� 밀리터리 뉴스 업데이트 시작..."
-echo "📅 $(date '+%Y-%m-%d %H:%M:%S')"
+# 뉴스 자동 수집 스크립트
 
-cd /Users/twinssn/Desktop/mil/mil
+cd ~/Desktop/mil/mil
 source venv/bin/activate
 
-# HTML 생성
-python3 scripts/generate_static.py
+echo "$(date): 뉴스 수집 시작" >> output.log
 
-# Git 커밋 (변경사항 있을 때만)
-if git diff --quiet web/index.html; then
-    echo "✅ 변경사항 없음. 푸시 생략."
-else
-    git add web/index.html
-    git commit -m "📊 자동 업데이트 $(date '+%Y-%m-%d %H:%M')"
-    git push
-    echo "✅ 배포 완료! https://mil-4a7.pages.dev/"
-fi
+# 수집 실행 (30초 후 자동 종료)
+timeout 30 python src/main.py >> output.log 2>&1
 
-echo "=" >> /Users/twinssn/Desktop/mil/mil/cron.log
+echo "$(date): 수집 완료" >> output.log

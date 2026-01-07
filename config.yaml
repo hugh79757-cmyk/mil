@@ -4,43 +4,113 @@ database:
 
 api_keys:
   newsdata_io: ""
+  deepl: "16c877b2-6a8c-416b-a8c8-9e964907e6fc:fx"
 
 rss_feeds:
+  # 군사 전문 매체
   - name: "Defense One"
     url: "https://www.defenseone.com/rss/all/"
     language: "en"
-    category: "global"
+    category: "military"
+    skip_filter: true
+  
   - name: "Military Times"
     url: "https://www.militarytimes.com/arc/outboundfeeds/rss/"
     language: "en"
-    category: "global"
+    category: "military"
+    skip_filter: true
+  
+  # 한국 뉴스
   - name: "Yonhap News"
     url: "https://en.yna.co.kr/RSS/national.xml"
     language: "en"
     category: "korea"
+    skip_filter: false
+  
+  # 방산/투자 뉴스
+  - name: "Reuters Aerospace"
+    url: "https://www.reutersagency.com/feed/?best-topics=aerospace-defense"
+    language: "en"
+    category: "defense_industry"
+    skip_filter: true
+  
+  - name: "Defense News"
+    url: "https://www.defensenews.com/arc/outboundfeeds/rss/"
+    language: "en"
+    category: "defense_industry"
+    skip_filter: true
 
 wikipedia:
   enabled: true
   stream_url: "https://stream.wikimedia.org/v2/stream/recentchange"
   pages:
+    # 한국 무기
     - title: "KF-21 Boramae"
       category: "aircraft"
       country: "korea"
     - title: "K2 Black Panther"
       category: "tank"
       country: "korea"
+    - title: "K9 Thunder"
+      category: "artillery"
+      country: "korea"
+    - title: "Hyunmoo (missile)"
+      category: "missile"
+      country: "korea"
+    
+    # 주요 무기
     - title: "F-35 Lightning II"
       category: "aircraft"
       country: "us"
+    - title: "B-21 Raider"
+      category: "aircraft"
+      country: "us"
+    
+    # 방산 기업
+    - title: "Korea Aerospace Industries"
+      category: "company"
+      country: "korea"
+    - title: "Hanwha Aerospace"
+      category: "company"
+      country: "korea"
+    - title: "Hyundai Rotem"
+      category: "company"
+      country: "korea"
 
 filters:
   high_priority:
+    # 무기 체계
     - "KF-21"
     - "K2 tank"
+    - "K9 thunder"
     - "F-35"
+    - "F-22"
+    - "B-21"
     - "nuclear"
     - "ICBM"
     - "stealth"
+    - "hypersonic"
+    - "drone strike"
+    - "aircraft carrier"
+    - "submarine"
+    
+    # 방산 기업
+    - "Hanwha"
+    - "KAI"
+    - "Korea Aerospace"
+    - "Hyundai Rotem"
+    - "LIG Nex1"
+    - "Lockheed Martin"
+    - "Boeing"
+    - "Raytheon"
+    - "Northrop Grumman"
+    
+    # 수출/계약
+    - "defense contract"
+    - "arms deal"
+    - "weapons export"
+    - "billion deal"
+    
   medium_priority:
     - "military"
     - "defense"
@@ -49,9 +119,36 @@ filters:
     - "army"
     - "navy"
     - "air force"
+    - "pentagon"
+    - "combat"
+    - "troops"
+    - "warship"
+    - "fighter jet"
+    - "bomber"
+    - "submarine"
+    - "artillery"
+    - "joint drill"
+    - "exercise"
+    - "deployment"
+    - "defense budget"
+    - "arms sales"
+    - "defense stock"
+    
   exclude:
     - "sports"
     - "entertainment"
+    - "k-beauty"
+    - "cosmetics"
+    - "k-pop"
+    - "drama"
+    - "movie"
+    - "celebrity"
+    - "fashion"
+    - "food"
+    - "tourism"
+    - "travel"
+    - "weather"
+    - "real estate"
 
 schedule:
   rss_collection_interval: 300
