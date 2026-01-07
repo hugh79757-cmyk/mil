@@ -148,6 +148,34 @@ html = f'''<!DOCTYPE html>
             font-size: 0.9em;
             margin-bottom: 20px;
         }}
+        .export-btn {{
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: transform 0.2s;
+            z-index: 999;
+        }}
+        .export-btn:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }}
+        #google_translate_element {{
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }}
     </style>
 </head>
 <body>
@@ -207,6 +235,22 @@ html += '''
             <p style="margin-top: 10px; font-size: 0.85em;">Powered by RSS Feeds + Wikipedia EventStreams</p>
         </div>
     </div>
+    
+    <!-- Export Button -->
+    <a href="javascript:void(0)" class="export-btn" onclick="alert('터미널에서 실행: python3 scripts/export_for_blog.py')">📝 블로그용 내보내기</a>
+    
+    <!-- Google Translate -->
+    <div id="google_translate_element"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'ko',
+                includedLanguages: 'ko,en,ja,zh-CN',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
 '''
@@ -217,5 +261,5 @@ with open(output_file, 'w', encoding='utf-8') as f:
     f.write(html)
 
 print(f"✅ HTML 생성 완료: {output_file}")
-print(f"�� 통계: 총 {stats['total']}개 | 오늘 {stats['today']}개")
+print(f"📊 통계: 총 {stats['total']}개 | 오늘 {stats['today']}개")
 print(f"📰 기사: {len(articles)}개 표시")
